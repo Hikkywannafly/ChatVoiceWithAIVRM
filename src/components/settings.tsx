@@ -50,34 +50,34 @@ export const Settings = ({
       </div>
       <div className="max-h-full overflow-auto">
         <div className="text-text1 max-w-3xl mx-auto px-24 py-64 ">
-          <div className="my-24 typography-32 font-bold">設定</div>
+          <div className="my-24 typography-32 font-bold">Settings</div>
           <div className="my-24">
-            <div className="my-16 typography-20 font-bold">OpenAI API キー</div>
+            <div className="my-16 typography-20 font-bold ">OpenAI API Key</div>
             <input
-              className="text-ellipsis px-16 py-8 w-col-span-2 bg-surface1 hover:bg-surface1-hover rounded-8"
+              className="text-ellipsis px-16 py-8  bg-surface1 hover:bg-surface1-hover rounded-8 w-full"
               type="text"
               placeholder="sk-..."
               value={openAiKey}
               onChange={onChangeAiKey}
             />
             <div>
-              APIキーは
+              API keys can be obtained from
               <Link
                 url="https://platform.openai.com/account/api-keys"
-                label="OpenAIのサイト"
+                label=" OpenAI API Keys page"
               />
-              で取得できます。取得したAPIキーをフォームに入力してください。
+              . Enter the api key in the form.
             </div>
             <div className="my-16">
-              入力されたAPIキーで、ブラウザから直接OpenAIのAPIを利用しますので、サーバー等には保存されません。
-              なお、利用しているモデルはGPT-3です。
+              The input API key is used to directly access OpenAI&apos;s API from the browser
+              and therefore is not stored on any server.The model being used is GPT-3.
               <br />
-              ※APIキーや会話文はピクシブのサーバーに送信されません。
+              The API key and conversation text will not be sent to any server.
             </div>
           </div>
           <div className="my-40">
             <div className="my-16 typography-20 font-bold">
-              キャラクターモデル
+              Character Model
             </div>
             <div className="my-8">
               <TextButton onClick={onClickOpenVrmFile}>VRMを開く</TextButton>
@@ -86,13 +86,12 @@ export const Settings = ({
           <div className="my-40">
             <div className="my-8">
               <div className="my-16 typography-20 font-bold">
-                キャラクター設定（システムプロンプト）
+                Character configuration (system prompt)
               </div>
               <TextButton onClick={onClickResetSystemPrompt}>
-                キャラクター設定リセット
+                Reset to default
               </TextButton>
             </div>
-
             <textarea
               value={systemPrompt}
               onChange={onChangeSystemPrompt}

@@ -90,7 +90,7 @@ export default function Home() {
   const handleSendChat = useCallback(
     async (text: string) => {
       if (!openAiKey) {
-        setAssistantMessage("APIキーが入力されていません");
+        setAssistantMessage("OpenAI API Key none");
         return;
       }
 
@@ -121,6 +121,7 @@ export default function Home() {
           return null;
         }
       );
+      console.log(`steam log `, stream);
       if (stream == null) {
         setChatProcessing(false);
         return;

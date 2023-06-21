@@ -21,7 +21,7 @@ export async function getChatResponse(messages: Message[], apiKey: string) {
   });
 
   const [aiRes] = data.choices;
-  const message = aiRes.message?.content || "エラーが発生しました";
+  const message = aiRes.message?.content || "A problem is detected";
 
   return { message: message };
 }
