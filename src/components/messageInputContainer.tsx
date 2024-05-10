@@ -62,14 +62,15 @@ export const MessageInputContainer = ({
     const SpeechRecognition =
       window.webkitSpeechRecognition || window.SpeechRecognition;
 
-    // FirefoxなどSpeechRecognition非対応環境対策
+    // FirefoxSpeechRecognition
     if (!SpeechRecognition) {
       return;
     }
     const recognition = new SpeechRecognition();
     recognition.lang = "en-US";
-    recognition.interimResults = true; // 認識の途中結果を返す
-    recognition.continuous = false; // 発言の終了時に認識を終了する
+    // recognition.lang = "ja-JP";
+    recognition.interimResults = true; //
+    recognition.continuous = false; //
 
     recognition.addEventListener("result", handleRecognitionResult);
     recognition.addEventListener("end", handleRecognitionEnd);
