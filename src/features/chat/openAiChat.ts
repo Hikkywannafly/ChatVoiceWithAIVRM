@@ -1,36 +1,12 @@
-import { Configuration, OpenAIApi } from "openai";
+import { OPENAI_ENDPOINT } from "../constants/openai";
 import { Message } from "../messages/messages";
-
-export async function getChatResponse(messages: Message[], apiKey: string) {
-  if (!apiKey) {
-    throw new Error("Invalid API Key");
-  }
-
-  const configuration = new Configuration({
-    apiKey: apiKey,
-  });
-  // ブラウザからAPIを叩くときに発生するエラーを無くすworkaround
-  // https://github.com/openai/openai-node/issues/6#issuecomment-1492814621
-  delete configuration.baseOptions.headers["User-Agent"];
-
-  const openai = new OpenAIApi(configuration);
-
-  const { data } = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: messages,
-  });
-
-  const [aiRes] = data.choices;
-  const message = aiRes.message?.content || "A problem is detected";
-
-  return { message: message };
-}
 
 export async function getChatResponseStream(
   messages: Message[],
-  apiKey: string
+  apiKey: string,
+  endpoint = OPENAI_ENDPOINT
 ) {
-  if (!apiKey) {
+  if (endpoint === OPENAI_ENDPOINT && !apiKey) {
     throw new Error("Invalid API Key");
   }
 
@@ -38,7 +14,7 @@ export async function getChatResponseStream(
     "Content-Type": "application/json",
     Authorization: `Bearer ${apiKey}`,
   };
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+  const res = await fetch(endpoint, {
     headers: headers,
     method: "POST",
     body: JSON.stringify({
@@ -60,15 +36,19 @@ export async function getChatResponseStream(
       try {
         while (true) {
           const { done, value } = await reader.read();
+
           if (done) break;
+
           const data = decoder.decode(value);
           const chunks = data
             .split("data:")
             .filter((val) => !!val && val.trim() !== "[DONE]");
+
           for (const chunk of chunks) {
             const json = JSON.parse(chunk);
             const messagePiece = json.choices[0].delta.content;
-            if (!!messagePiece) {
+
+            if (messagePiece) {
               controller.enqueue(messagePiece);
             }
           }

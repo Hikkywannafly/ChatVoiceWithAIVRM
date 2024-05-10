@@ -7,6 +7,14 @@ const nextConfig = {
   publicRuntimeConfig: {
     root: process.env.BASE_PATH || "",
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "vroid-hub.pximg.net",
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

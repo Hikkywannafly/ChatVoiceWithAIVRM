@@ -1,15 +1,32 @@
 import { useContext, useCallback } from "react";
 import { ViewerContext } from "../features/vrmViewer/viewerContext";
 import { buildUrl } from "@/utils/buildUrl";
+import { get, set } from "idb-keyval";
 
 export default function VrmViewer() {
   const { viewer } = useContext(ViewerContext);
 
   const canvasRef = useCallback(
-    (canvas: HTMLCanvasElement) => {
+    async (canvas: HTMLCanvasElement) => {
       if (canvas) {
         viewer.setup(canvas);
-        viewer.loadVrm(buildUrl("/AvatarSample_B.vrm"));
+
+        const modelPath = await get("vrmModel");
+
+        if (modelPath) {
+          if (typeof modelPath === "string") {
+            viewer.loadVrm(buildUrl(modelPath));
+          } else {
+            const blob = new Blob([modelPath], {
+              type: "application/octet-stream",
+            });
+            const url = window.URL.createObjectURL(blob);
+
+            viewer.loadVrm(url);
+          }
+        } else {
+          viewer.loadVrm(buildUrl("/AvatarSample_B.vrm"));
+        }
 
         // Drag and DropでVRMを差し替え
         canvas.addEventListener("dragover", function (event) {
@@ -34,6 +51,8 @@ export default function VrmViewer() {
             const blob = new Blob([file], { type: "application/octet-stream" });
             const url = window.URL.createObjectURL(blob);
             viewer.loadVrm(url);
+
+            set("vrmModel", file);
           }
         });
       }
@@ -42,8 +61,10 @@ export default function VrmViewer() {
   );
 
   return (
-    <div className={"absolute top-0 left-0 w-screen h-[100svh] -z-10"}>
-      <canvas ref={canvasRef} className={"h-full w-full"}></canvas>
+    <div
+      className={"absolute top-0 left-0 w-full h-full -z-10 overflow-hidden"}
+    >
+      <canvas ref={canvasRef}></canvas>
     </div>
   );
 }

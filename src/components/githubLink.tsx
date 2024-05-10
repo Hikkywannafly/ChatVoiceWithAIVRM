@@ -5,13 +5,14 @@ export const GitHubLink = () => {
     <div className="absolute right-0 z-10 m-24">
       <a
         draggable={false}
-        href="https://github.com/Hikkywannafly/ChatVRM"
+        href=""
         rel="noopener noreferrer"
         target="_blank"
       >
         <div className="p-8 rounded-16 bg-[#1F2328] hover:bg-[#33383E] active:bg-[565A60] flex">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt="https://github.com/Hikkywannafly/ChatVRM"
+            alt=""
             height={24}
             width={24}
             src={buildUrl("/github-mark-white.svg")}

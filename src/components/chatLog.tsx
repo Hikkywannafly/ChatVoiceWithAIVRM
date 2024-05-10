@@ -49,7 +49,7 @@ const Chat = ({ role, message }: { role: string; message: string }) => {
       </div>
       <div className="px-24 py-16 bg-white rounded-b-8">
         <div className={`typography-16 font-M_PLUS_2 font-bold ${roleText}`}>
-          {message}
+          {message.replace(/\[([a-zA-Z]*?)\]/g, "").trim()}
         </div>
       </div>
     </div>

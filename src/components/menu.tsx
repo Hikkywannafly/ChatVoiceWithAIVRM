@@ -1,37 +1,33 @@
 import { IconButton } from "./iconButton";
 import { Message } from "@/features/messages/messages";
-import { KoeiroParam } from "@/features/constants/koeiroParam";
 import { ChatLog } from "./chatLog";
 import React, { useCallback, useContext, useRef, useState } from "react";
 import { Settings } from "./settings";
 import { ViewerContext } from "@/features/vrmViewer/viewerContext";
 import { AssistantText } from "./assistantText";
+import { set } from "idb-keyval";
 
 type Props = {
   openAiKey: string;
+  openAiEndpoint: string;
   systemPrompt: string;
   chatLog: Message[];
-  koeiroParam: KoeiroParam;
   assistantMessage: string;
   onChangeSystemPrompt: (systemPrompt: string) => void;
   onChangeAiKey: (key: string) => void;
+  onChangeAiEndpoint: (endpoint: string) => void;
   onChangeChatLog: (index: number, text: string) => void;
-  onChangeKoeiromapParam: (param: KoeiroParam) => void;
-  handleClickResetChatLog: () => void;
-  handleClickResetSystemPrompt: () => void;
 };
 export const Menu = ({
   openAiKey,
+  openAiEndpoint,
   systemPrompt,
   chatLog,
-  koeiroParam,
   assistantMessage,
   onChangeSystemPrompt,
   onChangeAiKey,
+  onChangeAiEndpoint,
   onChangeChatLog,
-  onChangeKoeiromapParam,
-  handleClickResetChatLog,
-  handleClickResetSystemPrompt,
 }: Props) => {
   const [showSettings, setShowSettings] = useState(false);
   const [showChatLog, setShowChatLog] = useState(false);
@@ -52,14 +48,11 @@ export const Menu = ({
     [onChangeAiKey]
   );
 
-  const handleChangeKoeiroParam = useCallback(
-    (x: number, y: number) => {
-      onChangeKoeiromapParam({
-        speakerX: x,
-        speakerY: y,
-      });
+  const handleAiEndpointChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChangeAiEndpoint(event.target.value);
     },
-    [onChangeKoeiromapParam]
+    [onChangeAiEndpoint]
   );
 
   const handleClickOpenVrmFile = useCallback(() => {
@@ -80,6 +73,8 @@ export const Menu = ({
         const blob = new Blob([file], { type: "application/octet-stream" });
         const url = window.URL.createObjectURL(blob);
         viewer.loadVrm(url);
+
+        set("vrmModel", file);
       }
 
       event.target.value = "";
@@ -93,7 +88,7 @@ export const Menu = ({
         <div className="grid grid-flow-col gap-[8px]">
           <IconButton
             iconName="24/Menu"
-            label="Settings"
+            label="Menu"
             isProcessing={false}
             onClick={() => setShowSettings(true)}
           ></IconButton>
@@ -119,17 +114,15 @@ export const Menu = ({
       {showSettings && (
         <Settings
           openAiKey={openAiKey}
+          openAiEndpoint={openAiEndpoint}
           chatLog={chatLog}
           systemPrompt={systemPrompt}
-          koeiroParam={koeiroParam}
           onClickClose={() => setShowSettings(false)}
           onChangeAiKey={handleAiKeyChange}
+          onChangeAiEndpoint={handleAiEndpointChange}
           onChangeSystemPrompt={handleChangeSystemPrompt}
           onChangeChatLog={onChangeChatLog}
-          onChangeKoeiroParam={handleChangeKoeiroParam}
           onClickOpenVrmFile={handleClickOpenVrmFile}
-          onClickResetChatLog={handleClickResetChatLog}
-          onClickResetSystemPrompt={handleClickResetSystemPrompt}
         />
       )}
       {!showChatLog && assistantMessage && (

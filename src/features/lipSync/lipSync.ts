@@ -40,6 +40,7 @@ export class LipSync {
     bufferSource.connect(this.audio.destination);
     bufferSource.connect(this.analyser);
     bufferSource.start();
+
     if (onEnded) {
       bufferSource.addEventListener("ended", onEnded);
     }

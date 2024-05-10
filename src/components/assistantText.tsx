@@ -1,4 +1,15 @@
+import { useEffect, useRef } from "react";
+
 export const AssistantText = ({ message }: { message: string }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    containerRef.current?.scrollTo({
+      top: containerRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [message]);
+
   return (
     <div className="absolute bottom-0 left-0 mb-104  w-full">
       <div className="mx-auto max-w-4xl w-full p-16">
@@ -7,8 +18,11 @@ export const AssistantText = ({ message }: { message: string }) => {
             CHARACTER
           </div>
           <div className="px-24 py-16">
-            <div className="line-clamp-4 text-secondary typography-16 font-M_PLUS_2 font-bold">
-              {message.replace(/\[([a-zA-Z]*?)\]/g, "")}
+            <div
+              ref={containerRef}
+              className="text-secondary typography-16 font-M_PLUS_2 font-bold overflow-y-auto max-h-[6rem]"
+            >
+              {message.replace(/\[([a-zA-Z]*?)\]/g, "").trim()}
             </div>
           </div>
         </div>
