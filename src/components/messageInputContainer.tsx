@@ -62,8 +62,12 @@ export const MessageInputContainer = ({
     const SpeechRecognition =
       window.webkitSpeechRecognition || window.SpeechRecognition;
 
+    // FirefoxなどSpeechRecognition非対応環境対策
+    if (!SpeechRecognition) {
+      return;
+    }
     const recognition = new SpeechRecognition();
-    recognition.lang = "ja-JP";
+    recognition.lang = "en-US";
     recognition.interimResults = true; // 認識の途中結果を返す
     recognition.continuous = false; // 発言の終了時に認識を終了する
 
@@ -84,6 +88,11 @@ export const MessageInputContainer = ({
       userMessage={userMessage}
       isChatProcessing={isChatProcessing}
       isMicRecording={isMicRecording}
+      // onKeyDownUserMessage={(e) => {
+      //   if (e.key === "Enter") {
+      //     handleClickSendButton();
+      //   }
+      // }}
       onChangeUserMessage={(e) => setUserMessage(e.target.value)}
       onClickMicButton={handleClickMicButton}
       onClickSendButton={handleClickSendButton}
