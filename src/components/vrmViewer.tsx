@@ -25,7 +25,7 @@ export default function VrmViewer() {
             viewer.loadVrm(url);
           }
         } else {
-          viewer.loadVrm(buildUrl("/AvatarSample_B.vrm"));
+          viewer.loadVrm(buildUrl("/three-vrm-girl.vrm"));
         }
 
         // Drag and DropでVRMを差し替え
