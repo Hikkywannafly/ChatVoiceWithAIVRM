@@ -31,7 +31,7 @@ export const MessageInput = ({
 
   return (
     <div className="absolute bottom-0 z-20 w-screen">
-      <div className="bg-base text-black">
+      <div className=" text-black">
         <div className="mx-auto max-w-4xl p-16">
           <div className="grid grid-flow-col gap-[8px] grid-cols-[min-content_1fr_min-content]">
             <IconButton
@@ -60,8 +60,10 @@ export const MessageInput = ({
             />
           </div>
         </div>
-        <div className="py-4 bg-[#413D43] text-center text-white font-Montserrat">
-          powered by VRoid, ElevenLabs API, ChatGPT API, Author AlexJones(Hikkywannafly)
+        <div className="bg-[#413D43]">
+          <div className="py-2  text-center text-white font-Montserrat">
+            powered by VRoid, ElevenLabs API, ChatGPT API, Author AlexJones(Hikkywannafly)
+          </div>
         </div>
       </div>
     </div>
