@@ -67,7 +67,7 @@ export const MessageInputContainer = ({
       return;
     }
     const recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
+    recognition.lang = "vi-VN";
     recognition.interimResults = true; //
     recognition.continuous = false; //
 
