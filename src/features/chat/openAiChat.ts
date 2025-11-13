@@ -63,7 +63,7 @@ export async function getChatResponseStream(
     method: "POST",
     headers: headers,
     body: JSON.stringify({
-      "model": "cohere/command-r-plus",
+      "model": "google/gemini-2.5-flash",
       "messages": messages,
       "temperature": 0.7,
       "max_tokens": 200,
